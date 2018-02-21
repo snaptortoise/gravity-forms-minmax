@@ -15,7 +15,7 @@ This will return the smaller of the two fields (inserted as merge tags) and proc
 
 This will return the larger of the two fields and proceed to multiply by 4:
 
-`MAX({Field:1}, {Field:2}) * 2`
+`MAX({Field:1}, {Field:2}) * 4`
 
 This will return either the value of a field (if above zero) or zero:
 
