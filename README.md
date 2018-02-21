@@ -2,6 +2,8 @@
 
 Adds MIN and MAX functions for Gravity Forms number field calculations.
 
+[https://wordpress.org/plugins/gf-minmax-calculation/](https://wordpress.org/plugins/gf-minmax-calculation/)
+
 
 ## Description
 
@@ -29,6 +31,7 @@ This will return either the value of a field (if below zero) or zero:
 
 ### From the WordPress Admin Area
 
+1. Download the plugin zip file from [https://wordpress.org/plugins/gf-minmax-calculation/](https://wordpress.org/plugins/gf-minmax-calculation/)
 1. Log in to your WordPress admin area and navigate to the `Plugins` page
 1. Click `Add New`, then click `Upload Plugin`
 1. Click `Choose File`, then locate and select the plugin zip file
