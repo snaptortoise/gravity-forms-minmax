@@ -28,3 +28,9 @@ Doing complex calculations in Gravity Forms can be a chore, but this plugin can 
 
 2. Upload the entire `gravityforms-minmax` folder to the `/wp-content/plugins/` directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
+
+== Changelog ==
+
+0.2.0: June 7, 2018
+
+- MIN/MAX functions can now accommodate *any* number of arguments.
