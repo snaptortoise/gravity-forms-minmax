@@ -7,15 +7,15 @@ Adds MIN and MAX functions for Gravity Forms number field calculations.
 
 ## Description
 
-Doing complex calculations in Gravity Forms can be a chore, but this plugin can make it slightly easier. This WordPress plugin adds `MIN()` and `MAX()` functions for Gravity Forms number fields calculations. It can be used to determine the highest or lowest value between two passed arguments, including merge tags.
+Doing complex calculations in Gravity Forms can be a chore, but this plugin can make it slightly easier. This WordPress plugin adds `MIN()` and `MAX()` functions for Gravity Forms number fields calculations. It can be used to determine the highest or lowest value between any number of passed arguments, including merge tags.
 
 ## Examples
 
-This will return the smaller of the two fields (inserted as merge tags) and proceed to divide it by 2:
+This will return the smaller of the four fields (inserted as merge tags) and proceed to divide it by 2:
 
-`MIN({Field:1}, {Field:2}) / 2` 
+`MIN({Field:1}, {Field:2}, {Field:3}, {Field:4}) / 2` 
 
-This will return the larger of the two fields and proceed to multiply by 4:
+This will return the larger of two fields and proceed to multiply by 4:
 
 `MAX({Field:1}, {Field:2}) * 4`
 

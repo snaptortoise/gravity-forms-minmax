@@ -20,8 +20,7 @@ function gforms_minmax() {
 
 function gforms_minmax_calculation( $result, $formula, $field, $form, $entry ) {
 	
-	if ( false !== strpos( $formula, 'MIN' ) || false !== strpos( $formula, 'MAX' ) ) {
-
+	if ( false !== strpos( $formula, 'MIN' ) || false !== strpos( $formula, 'MAX' ) ) {		
 		/**
 		 * Sanitize input
 		 * 
@@ -34,14 +33,20 @@ function gforms_minmax_calculation( $result, $formula, $field, $form, $entry ) {
 		/**
 		 * Filter just the MIN/MAX function calls within the formula
 		 */
-		preg_match_all( '@((MIN|MAX)\(([\d\.]+)\s*,\s*([\d\.]+)\))@is', $formula, $matches );
-
+		preg_match_all( '@((MIN|MAX)\(([\d\.\,\ ]+)\s*\))@is', $formula, $matches );		
+		
 		$search = $matches[0];
 		$replace = array();
 
+		$values = explode(",", $matches[3][0]);	
+		
+		$values = array_map( function($value){
+			return floatval($value);
+		}, explode(",", $matches[3][0]));
+
 		foreach ( $search as $key => $expression ) {
-			if ($matches[2][$key] == "MIN") $replace[] = min($matches[3][$key], $matches[4][$key]);
-			if ($matches[2][$key] == "MAX") $replace[] = max($matches[3][$key], $matches[4][$key]);
+			if ($matches[2][$key] == "MIN") $replace[] = min($values);
+			if ($matches[2][$key] == "MAX") $replace[] = max($values);
 		} 
 		
 		/**

@@ -15,7 +15,7 @@
 gform.addFilter( 'gform_calculation_result', function( result, formulaField, formId, calcObj ) {
 
 	/**
-	 * Only evaluate if the field has a caret in it
+	 * Only evaluate if the field has MIN/MAX present
 	 *
 	 * Technically we should be able to run any formulas through this without
 	 * breaking them, but this way we save some small amount of processing
@@ -24,7 +24,6 @@ gform.addFilter( 'gform_calculation_result', function( result, formulaField, for
 	 *       Description of `indexOf` method
 	 */
 
-	console.log(fieldFormula);
 	if ( formulaField.formula.indexOf( 'MIN' ) > -1 || formulaField.formula.indexOf( 'MAX' ) > -1  ) {
 
 		/**
@@ -36,7 +35,7 @@ gform.addFilter( 'gform_calculation_result', function( result, formulaField, for
 		 * @param object formulaField The current calculation field object
 		 * @var   string fieldFormula
 		 */
-		var fieldFormula = calcObj.replaceFieldTags( formId, formulaField.formula, formulaField );
+		let fieldFormula = calcObj.replaceFieldTags( formId, formulaField.formula, formulaField );
 
 		/**
 		 * Sanitize the formula in case we have malicious user inputs. This
@@ -48,40 +47,28 @@ gform.addFilter( 'gform_calculation_result', function( result, formulaField, for
 		 *
 		 * @link https://www.w3schools.com/jsref/jsref_replace.asp
 		 *       Description of `replace` method
-		 */
-		// console.log(fieldFormula);
+		 */		
 
-		var pattern = /(MIN|MAX)\(([\d\.]+)\s*,\s*([\d\.]+)\)/gi;
-		var matches = fieldFormula.match(pattern);
+		const pattern = /(MIN|MAX)\(([\d\.\,\ ]+)\s*\)/gi,
+			matches = fieldFormula.match(pattern);
 
-		var replaces = [];
+		let replaces = [];		
 
-		for(let i in matches) {
-			//console.log(`#${i}: Matching against ${matches[i]}`)
-			// var params = pattern.exec(matches[i]);
-			var components = /(MIN|MAX)\(([\d\.]+)\s*,\s*([\d\.]+)\)/gi.exec(matches[i]);
+		for(let i in matches) {			
+			let components = /(MIN|MAX)\(([\d\.,\ ]+)\s*\)/gi.exec(matches[i]);
+			let values = components[2].split(',').map((value,index,array) => {
+				return parseFloat(value.trim());
+			});			
 
-			if (components[1] == "MIN") replaces.push([matches[i], , Math.min(components[2], components[3])]);
-			if (components[1] == "MAX") replaces.push([matches[i], , Math.max(components[2], components[3])]);
+			if (components[1] == "MIN") replaces.push([matches[i], , Math.min(...values)]);
+			if (components[1] == "MAX") replaces.push([matches[i], , Math.max(...values)]);
 		}
 		
 		for(let i in replaces) {
 			fieldFormula = fieldFormula.replace(replaces[i][0], replaces[i][2]);
 		}
-
-		console.log(fieldFormula)
-
-		// console.log(replaces);
-		// fieldFormula.replaces()
+		
 		fieldFormula = fieldFormula.replace( /[^0-9\s\n\r\+\-\*\/\^\(\)\.](MIN|MAX)/g, '' );
-
-		/**
-		 * Wrap every number with parentheses and replace the caret symbol with
-		 * ".pow"
-		 */
-		// fieldFormula = fieldFormula.replace(/[\d|\d.\d]+/g, function(n){
-		// 	return '(' + n + ')'
-		// }).replace(/\^|\*\*/g, '.pow');
 
 		/**
 		 * Set calculation result equal to evaluated string
@@ -89,9 +76,10 @@ gform.addFilter( 'gform_calculation_result', function( result, formulaField, for
 		 * @link https://www.w3schools.com/jsref/jsref_eval.asp
 		 *       Description of `eval` function
 		 */
+		
 		result = eval(fieldFormula);
 
-	} // if ( formulaField.formula.indexOf( '^' ) > -1 || formulaField.formula.indexOf( '**' ) > -1  )
+	} 
 
 	return result;
 
