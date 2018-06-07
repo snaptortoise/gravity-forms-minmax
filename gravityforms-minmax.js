@@ -1,4 +1,7 @@
 /**
+ * Gravity Forms MIN/MAX Calculations
+ * Version 0.2.0
+ * 
  * Add MIN/MAX functions to Gravity Forms calculation
  *
  * Thanks to @michaeldozark for gravityforms-exponent plugin:
@@ -7,12 +10,7 @@
  *
  */
 
-
-/**
- * Javascript filter
- *
- */
-gform.addFilter( 'gform_calculation_result', function( result, formulaField, formId, calcObj ) {
+ gform.addFilter( 'gform_calculation_result', function( result, formulaField, formId, calcObj ) {
 
 	/**
 	 * Only evaluate if the field has MIN/MAX present

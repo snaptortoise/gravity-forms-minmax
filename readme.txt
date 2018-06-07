@@ -3,8 +3,8 @@ Contributors: georgemandis
 Donate link: https://george.mand.is/support
 Tags: gravity forms, math, calculations
 Requires at least: 2.8.0
-Tested up to: 4.9.4
-Requires PHP: 4.1.0
+Tested up to: 4.9.6
+Requires PHP: 5.3.0
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -13,7 +13,7 @@ Adds MIN and MAX functions for Gravity Forms number field calculations.
 
 == Description ==
 
-Doing complex calculations in Gravity Forms can be a chore, but this plugin can make it slightly easier. This WordPress plugin adds `MIN()` and `MAX()` functions for Gravity Forms number fields calculations. It can be used to determine the highest or lowest value between two passed arguments, including merge tags.
+Doing complex calculations in Gravity Forms can be a chore, but this plugin can make it slightly easier. This WordPress plugin adds `MIN()` and `MAX()` functions for Gravity Forms number fields calculations. It can be used to determine the highest or lowest value between any number of passed arguments, including merge tags.
 
 == Installation ==
 
