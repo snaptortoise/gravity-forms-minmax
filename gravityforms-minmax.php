@@ -4,7 +4,7 @@
  * Plugin URI: https://snaptortoise.com?wp-gf-minmax
  * Description: Adds MIN/MAX function support for calculations in number fields
  * Version: 0.2.0
- * Author: Snaptortoise Web Development
+ * Author: SnapTortoise Web Development
  * Author URI: https://snaptortoise.com
  *
  */
