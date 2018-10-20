@@ -7,7 +7,7 @@ Adds MIN and MAX functions for Gravity Forms number field calculations.
 
 ## Description
 
-Doing complex calculations in Gravity Forms can be a chore, but this plugin can make it slightly easier. This WordPress plugin adds `MIN()` and `MAX()` functions for Gravity Forms number fields calculations. It can be used to determine the highest or lowest value between any number of passed arguments, including merge tags.
+This WordPress plugin adds `MIN()` and `MAX()` functions for Gravity Forms number fields calculations. It can be used to determine the highest or lowest value from any number of passed arguments, including merge tags.
 
 ## Examples
 
