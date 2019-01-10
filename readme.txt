@@ -31,7 +31,7 @@ Doing complex calculations in Gravity Forms can be a chore, but this plugin can 
 
 == Changelog ==
 
-0.3.1: January 9, 2019
+0.3.1: January 10, 2019
 
 - Fixes bug where calculations and parantheses within MIN/MAX created errors.
 
