@@ -46,13 +46,13 @@ gform.addFilter( 'gform_calculation_result', function( result, formulaField, for
 		 *       Description of `replace` method
 		 */		
 
-		const pattern = /(MIN|MAX)\(([\d\+\-\*\/\.\,\ ]+)\s*\)/gi,
+		const pattern = /(MIN|MAX)\(([\d\s\W]+)\s*\)/gi,
 			matches = fieldFormula.match(pattern);
-
+		
 		let replaces = [];		
 
 		for(let i in matches) {			
-			let components = /(MIN|MAX)\(([\d\+\-\*\/\.,\ ]+)\s*\)/gi.exec(matches[i]);
+			let components = /(MIN|MAX)\(([\d\s\W]+)\s*\)/gi.exec(matches[i]);
 			let values = components[2].split(',').map((value,index,array) => {
 				return parseFloat(eval(value.trim()));
 			});			

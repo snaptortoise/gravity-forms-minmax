@@ -28,12 +28,12 @@ function gforms_minmax_calculation( $result, $formula, $field, $form, $entry ) {
 		 * with an @ symbol.
 		 *		 
 		 */
-		$formula = preg_replace( '@[^0-9\s\n\r\+\-\*\/\^\(\)\.](MIN|MAX)@is', '', $formula );
+		$formula = preg_replace( '@[^0-9\s\n\r\s\W](MIN|MAX)@is', '', $formula );
 
 		/**
 		 * Filter just the MIN/MAX function calls within the formula
 		 */
-		preg_match_all( '@((MIN|MAX)\(([\d\+\-\*\/\.\,\ ]+)\s*\))@is', $formula, $matches );		
+		preg_match_all( '@((MIN|MAX)\(([\d\s\W]+)\s*\))@is', $formula, $matches );		
 		
 		$search = $matches[0];
 		$replace = array();
