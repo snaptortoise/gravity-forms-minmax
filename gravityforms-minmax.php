@@ -3,7 +3,7 @@
  * Plugin Name: Gravity Forms MIN/MAX Calculation
  * Plugin URI: https://snaptortoise.com?wp-gf-minmax
  * Description: Adds MIN/MAX function support for calculations in number fields
- * Version: 0.2.0
+ * Version: 0.3.0
  * Author: SnapTortoise Web Development
  * Author URI: https://snaptortoise.com
  *
@@ -28,20 +28,20 @@ function gforms_minmax_calculation( $result, $formula, $field, $form, $entry ) {
 		 * with an @ symbol.
 		 *		 
 		 */
-		$formula = preg_replace( '@[^0-9\s\n\r\+\-*\/\^\(\)\.](MIN|MAX)@is', '', $formula );
+		$formula = preg_replace( '@[^0-9\s\n\r\+\-\*\/\^\(\)\.](MIN|MAX)@is', '', $formula );
 
 		/**
 		 * Filter just the MIN/MAX function calls within the formula
 		 */
-		preg_match_all( '@((MIN|MAX)\(([\d\.\,\ ]+)\s*\))@is', $formula, $matches );		
+		preg_match_all( '@((MIN|MAX)\(([\d\+\-\*\/\.\,\ ]+)\s*\))@is', $formula, $matches );		
 		
 		$search = $matches[0];
 		$replace = array();
 
 		$values = explode(",", $matches[3][0]);	
 		
-		$values = array_map( function($value){
-			return floatval($value);
+		$values = array_map( function($value) {			
+			return floatval(eval("return {$value};"));
 		}, explode(",", $matches[3][0]));
 
 		foreach ( $search as $key => $expression ) {

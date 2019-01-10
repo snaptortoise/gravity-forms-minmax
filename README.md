@@ -27,6 +27,10 @@ This will return either the value of a field (if below zero) or zero:
 
 `MIN({Field:1}, 0)`
 
+You can include calculations within the arguments themselves, for example
+
+`MIN({Field:1} * 2, {Field:2} / 2)`
+
 ## Installation
 
 ### From the WordPress Admin Area
