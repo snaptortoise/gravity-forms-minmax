@@ -3,7 +3,7 @@
  * Plugin Name: Gravity Forms MIN/MAX Calculation
  * Plugin URI: https://snaptortoise.com?wp-gf-minmax
  * Description: Adds MIN/MAX function support for calculations in number fields
- * Version: 0.3.0
+ * Version: 0.3.1
  * Author: SnapTortoise Web Development
  * Author URI: https://snaptortoise.com
  *
