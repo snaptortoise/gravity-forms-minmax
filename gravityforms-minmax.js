@@ -36,7 +36,7 @@ gform.addFilter( 'gform_calculation_result', function( result, formulaField, for
 		 * @param object formulaField The current calculation field object
 		 * @var   string fieldFormula
 		 *
-		 * \W not used so that ] is not mathced
+		 * \W not used and replaced with \)\(\*\\\+\-\.\, so that ] is not mathced
 		 */
 		let fieldFormula = calcObj.replaceFieldTags( formId, formulaField.formula, formulaField ), pattern = /(MIN|MAX)\[([\d\s\)\(\*\\\+\-\.\,])+\s*\]/gi;
 		
