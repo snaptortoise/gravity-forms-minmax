@@ -36,9 +36,9 @@ gform.addFilter( 'gform_calculation_result', function( result, formulaField, for
 		 * @param object formulaField The current calculation field object
 		 * @var   string fieldFormula
 		 *
-		 * \W not used and replaced with \)\(\*\\\+\-\.\, so that ] is not mathced
+		 * \W not used and replaced with \)\(\*\/\+\-\.\, so that ] is not mathced
 		 */
-		let fieldFormula = calcObj.replaceFieldTags( formId, formulaField.formula, formulaField ), pattern = /(MIN|MAX)\[([\d\s\)\(\*\\\+\-\.\,])+\s*\]/gi;
+		let fieldFormula = calcObj.replaceFieldTags( formId, formulaField.formula, formulaField ), pattern = /(MIN|MAX)\[([\d\s\)\(\*\/\+\-\.\,])+\s*\]/gi;
 		
 		/*
 		 *To allow parenthesis within the MIN and MAX arguments, we need to change MIN() and MAX() to MIN[] and MAX[]	
@@ -93,7 +93,7 @@ gform.addFilter( 'gform_calculation_result', function( result, formulaField, for
 			let matches = fieldFormula.match(pattern), replaces = [];		
 
 			for(let i in matches) {			
-				let components = /(MIN|MAX)\[([\d\s\)\(\*\\\+\-\.\,])+\s*\]/gi.exec(matches[i]);
+				let components = /(MIN|MAX)\[([\d\s\)\(\*\/\+\-\.\,])+\s*\]/gi.exec(matches[i]);
 				let values = components[0].replace("MAX[", "").replace("MIN[", "").replace("]", "").split(',').map((value,index,array) => {
 					return parseFloat(eval(value.trim()));
 				});			
