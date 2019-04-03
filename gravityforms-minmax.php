@@ -18,50 +18,90 @@ function gforms_minmax() {
 	add_filter( 'gform_calculation_result', 'gforms_minmax_calculation', 10, 5 );
 }
 
-function gforms_minmax_calculation( $result, $formula, $field, $form, $entry ) {
-	
-	if ( false !== strpos( $formula, 'MIN' ) || false !== strpos( $formula, 'MAX' ) ) {		
-		/**
-		 * Sanitize input
-		 * 
-		 * Removing non-formula related strings * delimit
-		 * with an @ symbol.
-		 *		 
-		 */
-		$formula = preg_replace( '@[^0-9\s\n\r\s\W](MIN|MAX)@is', '', $formula );
 
-		/**
-		 * Filter just the MIN/MAX function calls within the formula
-		 */
-		preg_match_all( '@((MIN|MAX)\(([\d\s\W]+)\s*\))@is', $formula, $matches );		
+
+function minMaxPrep( $str ) {	
+	if( ( strpos( $str, 'MIN(' ) !== false ) || ( strpos( $str, 'MAX(' ) !== false ) ){
+		$str = preg_replace( '/MIN\(/', "MIN[", $str );
+		$str = preg_replace( '/MAX\(/', "MAX[", $str );
 		
-		$search = $matches[0];
-		$replace = array();
-
-		$values = explode(",", $matches[3][0]);	
+		$min_max_bracket_pattern = '/(MIN\[|MAX\[)/';
+		preg_match_all( $min_max_bracket_pattern, $str, $min_max_bracket_matches, PREG_OFFSET_CAPTURE );		
+		$strIndices = [];	
 		
-		$values = array_map( function($value) {			
-			return floatval(eval("return {$value};"));
-		}, explode(",", $matches[3][0]));
-
-		foreach ( $search as $key => $expression ) {
-			if ($matches[2][$key] == "MIN") $replace[] = min($values);
-			if ($matches[2][$key] == "MAX") $replace[] = max($values);
-		} 
+		foreach( $min_max_bracket_matches[0] as $index => $min_max_bracket_match ) {
+			$strIndices[] = $min_max_bracket_match[1];
+		}
 		
-		/**
-		 * Replace instances of MIN(x,y) or MAY(x,y) with
-		 * the calcualted values
-		 */
-		$formula = str_replace( $search, $replace, $formula );
+		for( $t = 0; $t < count( $strIndices ); $t++ ) {
 
-		/**
-		 * Evaulate formula and return result
-		 */
-		$result = eval( "return {$formula};" );
+			$start_counter = 0; 
+			$end_counter = 0;
+
+			for( $k = $strIndices[$t]; $k < strlen( $str ); $k++) {
+				if( ( substr( $str, $k, 1) === "[" ) || ( substr( $str, $k, 1) === "(" ) ) {
+					$start_counter++;
+				} else if ( ( substr( $str, $k, 1) === "]" ) || ( substr( $str, $k, 1) === ")" ) ) {
+					$end_counter++;
+				}
+
+				if( ( $start_counter == $end_counter ) && ( $start_counter != 0 ) ) {
+					$str = substr_replace( $str, ']', $k, 1 );
+					break;
+				}
+			}
+		}
+
 	}
-	return $result;
+	return $str;
 }
+
+
+
+function gforms_math_extensions_calculation( $result, $formula, $field, $form, $entry ) {
+	
+	if( ( strpos( $formula, 'MIN(' ) !== false ) || ( strpos( $formula, 'MAX(' ) !== false )	) {
+		
+		global $min_max_clean_pattern;
+				
+		$min_max_pattern = '/(MIN|MAX)\[([\d\s\)\(\*\/\+\-\.\,])+\s*\]/';
+		
+		$formula = preg_replace( '/[^0-9\s\n\r\+\-\*\/\^\(\)\.\]\,\MAX[\MIN[\%]/', '', $formula );
+					
+		$formula = minMaxPrep( $formula );
+									
+		while( preg_match_all( $min_max_pattern, $formula, $min_max_matches ) ) {
+			
+			if( isset( $per_matches ) && is_array( $per_matches ) && ( count( $per_matches ) > 0 ) ) {								
+				
+				foreach( $min_max_matches[0] as $index => $min_max_match ) {
+					
+					$pre_min_max_match = preg_replace( '/(MIN\[|MAX\[|\])/', '', $min_max_match );
+					
+					$values = array_map( function( $value ) {			
+						return floatval( eval( "return {$value};" ) );
+					}, explode( ",", $pre_min_max_match ) );
+					
+					$formula = str_replace( $min_max_match, ( strpos( $min_max_match, 'MIN[' ) !== false ) ? min( $values ) : max( $values ), $formula );
+					
+				}
+				
+			}
+			
+		}
+		
+		$formula = preg_replace( '/(MIN\[|MAX\[|\])/', '', $formula );		
+				
+		$result = eval( "return {$formula};" );
+				
+	}
+	
+	return $result;
+	
+}
+add_filter( 'gform_calculation_result', 'gforms_math_extensions_calculation', 10, 5 );
+
+
 
 /**
  * Enqueue scripts to show calculations on frontend
