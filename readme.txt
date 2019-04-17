@@ -3,7 +3,7 @@ Contributors: georgemandis
 Donate link: https://george.mand.is/support
 Tags: gravity forms, math, calculations
 Requires at least: 2.8.0
-Tested up to: 5.0.3
+Tested up to: 5.1.1
 Requires PHP: 5.3.0
 Stable tag: trunk
 License: GPLv2 or later
@@ -30,6 +30,11 @@ Doing complex calculations in Gravity Forms can be a chore, but this plugin can 
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Changelog ==
+
+0.4.0: April 17, 2019
+
+- Fixes bug where calculations encapsulated in parantheses with MIN/MAX might create errors.
+- Formulas containing MIN/MAX functions now validate correctly in the form editor
 
 0.3.1: January 10, 2019
 
