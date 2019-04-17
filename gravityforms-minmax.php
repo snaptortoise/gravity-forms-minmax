@@ -29,7 +29,7 @@ function gforms_minmax_calculation( $result, $formula, $field, $form, $entry ) {
 		 *		 
 		 */
 
-		// Remove leading & ending parantheses if present
+		// Remove leading & ending parentheses if present
 		while (substr($formula,0,1) === '(' && substr($formula,-1) === ')') {
 			$formula = substr($formula, 1, -1);
 		}
@@ -98,7 +98,7 @@ function check_formula( $form ) {
 						try {
 							const pattern = /\(?(MIN|MAX)\(([\d\s\W]+)\s*\)/gi;
 
-							// Remove leading & ending parantheses if present
+							// Remove leading & ending parentheses if present
 							while (formula[0] === '(' && formula.slice(-1) === ')') {
 								formula = formula.substr(1, formula.length - 2);
 							}

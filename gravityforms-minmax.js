@@ -48,7 +48,7 @@ gform.addFilter( 'gform_calculation_result', function( result, formulaField, for
 		 
 		const pattern = /\(?(MIN|MAX)\(([\d\s\W]+)\s*\)/gi;
 
-		// Remove leading & ending parantheses if present
+		// Remove leading & ending parentheses if present
 		while (fieldFormula[0] === '(' && fieldFormula.slice(-1) === ')') {
 			fieldFormula = fieldFormula.substr(1, fieldFormula.length - 2);
 		}
