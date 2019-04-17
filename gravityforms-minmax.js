@@ -1,6 +1,6 @@
 /**
  * Gravity Forms MIN/MAX Calculations
- * Version 0.3.1
+ * Version 0.4.0
  * 
  * Add MIN/MAX functions to Gravity Forms calculation
  *
@@ -45,15 +45,20 @@ gform.addFilter( 'gform_calculation_result', function( result, formulaField, for
 		 * @link https://www.w3schools.com/jsref/jsref_replace.asp
 		 *       Description of `replace` method
 		 */		
+		 
+		const pattern = /\(?(MIN|MAX)\(([\d\s\W]+)\s*\)/gi;
 
-		const pattern = /(MIN|MAX)\(([\d\s\W]+)\s*\)/gi,
-			matches = fieldFormula.match(pattern);
+		// Remove leading & ending parantheses if present
+		while (fieldFormula[0] === '(' && fieldFormula.slice(-1) === ')') {
+			fieldFormula = fieldFormula.substr(1, fieldFormula.length - 2);
+		}
 		
+		matches = fieldFormula.match(pattern);					
 		let replaces = [];		
 
 		for(let i in matches) {			
-			let components = /(MIN|MAX)\(([\d\s\W]+)\s*\)/gi.exec(matches[i]);
-			let values = components[2].split(',').map((value,index,array) => {
+			let components = /\(?(MIN|MAX)\(([\d\s\W]+)\s*\)/gi.exec(matches[i]);			
+			let values = components[2].split(',').map((value,index,array) => {			
 				return parseFloat(eval(value.trim()));
 			});			
 
@@ -80,4 +85,4 @@ gform.addFilter( 'gform_calculation_result', function( result, formulaField, for
 
 	return result;
 
-} );
+});
