@@ -3,7 +3,7 @@
  * Plugin Name: Gravity Forms MIN/MAX Calculation
  * Plugin URI: https://snaptortoise.com?wp-gf-minmax
  * Description: Adds MIN/MAX function support for calculations in number fields
- * Version: 0.3.1
+ * Version: 0.4.0
  * Author: SnapTortoise Web Development
  * Author URI: https://snaptortoise.com
  *
@@ -28,6 +28,12 @@ function gforms_minmax_calculation( $result, $formula, $field, $form, $entry ) {
 		 * with an @ symbol.
 		 *		 
 		 */
+
+		// Remove leading & ending parentheses if present
+		while (substr($formula,0,1) === '(' && substr($formula,-1) === ')') {
+			$formula = substr($formula, 1, -1);
+		}
+
 		$formula = preg_replace( '@[^0-9\s\n\r\s\W](MIN|MAX)@is', '', $formula );
 
 		/**
@@ -74,9 +80,60 @@ function gforms_minmax_wp_enqueue_scripts( $form ) {
 		 *
 		 */
 		$min = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min' );
+		$min = '';
 
 		wp_enqueue_script( 'gforms-minmax', trailingslashit( plugin_dir_url( __FILE__ ) ) . "gravityforms-minmax{$min}.js", array( 'gform_gravityforms' ), '0.1.0', true );
 
 	}
 
+}
+
+add_action( 'gform_admin_pre_render', 'check_formula' );
+function check_formula( $form ) {
+    ?>
+    <script type="text/javascript">
+        gform.addFilter( 'gform_is_valid_formula_form_editor', 'check_formula' );
+        function check_formula( result, formula ) {					
+					if ( formula.indexOf( 'MIN' ) > -1 || formula.indexOf( 'MAX' ) > -1  ) {
+						try {
+							const pattern = /\(?(MIN|MAX)\(([\d\s\W]+)\s*\)/gi;
+
+							// Remove leading & ending parentheses if present
+							while (formula[0] === '(' && formula.slice(-1) === ')') {
+								formula = formula.substr(1, formula.length - 2);
+							}
+
+							// replace variables with 0 for admin validation
+							formula = formula.replace(/\{(.+?)\}/gi,"0");
+							matches = formula.match(pattern);
+							
+							let replaces = [];		
+
+							for(let i in matches) {			
+								let components = /\(?(MIN|MAX)\(([\d\s\W]+)\s*\)/gi.exec(matches[i]);			
+								let values = components[2].split(',').map((value,index,array) => {			
+									return parseFloat(eval(value.trim()));
+								});			
+
+								if (components[1] == "MIN") replaces.push([matches[i], , Math.min(...values)]);
+								if (components[1] == "MAX") replaces.push([matches[i], , Math.max(...values)]);
+							}
+
+							for(let i in replaces) {
+								formula = formula.replace(replaces[i][0], replaces[i][2]);
+							}
+
+							formula = formula.replace( /[^0-9\s\n\r\+\-\*\/\^\(\)\.](MIN|MAX)/g, '' );					
+							result = eval(formula);
+						}catch(e) {
+							results = false;
+						}
+					} 
+
+					return result;
+				}
+    	</script>
+    <?php
+    //return the form object from the php hook
+    return $form;
 }
