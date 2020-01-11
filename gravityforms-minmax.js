@@ -1,6 +1,6 @@
 /**
  * Gravity Forms MIN/MAX Calculations
- * Version 0.4.0
+ * Version 0.4.1
  * 
  * Add MIN/MAX functions to Gravity Forms calculation
  *

@@ -3,7 +3,7 @@
  * Plugin Name: Gravity Forms MIN/MAX Calculation
  * Plugin URI: https://snaptortoise.com?wp-gf-minmax
  * Description: Adds MIN/MAX function support for calculations in number fields
- * Version: 0.4.0
+ * Version: 0.4.1
  * Author: SnapTortoise Web Development
  * Author URI: https://snaptortoise.com
  *
@@ -91,8 +91,11 @@ function gforms_minmax_wp_enqueue_scripts( $form ) {
 add_action( 'gform_admin_pre_render', 'check_formula' );
 function check_formula( $form ) {
     ?>
-    <script type="text/javascript">
-        gform.addFilter( 'gform_is_valid_formula_form_editor', 'check_formula' );
+    <script type="text/javascript">				
+				if (typeof gform !== 'undefined') {
+					gform.addFilter( 'gform_is_valid_formula_form_editor', 'check_formula' );
+				}
+        
         function check_formula( result, formula ) {					
 					if ( formula.indexOf( 'MIN' ) > -1 || formula.indexOf( 'MAX' ) > -1  ) {
 						try {

@@ -31,10 +31,14 @@ Doing complex calculations in Gravity Forms can be a chore, but this plugin can 
 
 == Changelog ==
 
+0.4.1: January 11, 2020
+
+- Fixed a console error in admin when viewing form entries. 
+
 0.4.0: April 17, 2019
 
 - Fixes bug where calculations encapsulated in parentheses with MIN/MAX might create errors.
-- Formulas containing MIN/MAX functions now validate correctly in the form editor
+- Formulas containing MIN/MAX functions now validate correctly in the form editor.
 
 0.3.1: January 10, 2019
 
