@@ -3,7 +3,7 @@ Contributors: georgemandis
 Donate link: https://george.mand.is/support
 Tags: gravity forms, math, calculations
 Requires at least: 2.8.0
-Tested up to: 5.3.2
+Tested up to: 5.8
 Requires PHP: 5.3.0
 Stable tag: trunk
 License: GPLv2 or later
